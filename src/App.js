@@ -30,11 +30,11 @@ class App extends Component {
 	};
 
 	//fn that will allow us to check if the id of the galaxy being clicked is is prsent in the state array for previously selected IDs.
-	clickCard = event => {
+	clickCard = card => {
 	//check if the playstate is still truthy
 		if (this.state.stillPlaying){
 					//Make sure we are working with a number
-		const intVal = parseInt(event.target.id);
+		const intVal = parseInt(card.target.id);
 		//check if the file is in the ClickedArr and then route
 		return this.state.clickedArr.indexOf(intVal) ? this.keepGoing(intVal) : this.gameOver() ;
 		}
@@ -61,6 +61,7 @@ class App extends Component {
 
 	render() {
 		return (
+			<React.Fragment>
 			<div className="App">
 				<header className="App-header">
 					<h1 className="App-title">Clicky Game</h1>
@@ -76,10 +77,10 @@ class App extends Component {
 				</p>
 			</div>
 
-			<Container className = "mx-auto">
+			<Container >
 				{placeCards(galaxiesList)}
-			</Container>
-
+		</Container>
+		</React.Fragment>
     );
 	}
 }

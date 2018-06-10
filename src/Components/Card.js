@@ -4,7 +4,7 @@ import { Card, CardImage} from 'mdbreact';
 		<CardImage className="img-fluid mx-0 px-0 my-0 py-0" 
 		src={props.img} 
 		id = {props.id}
-		onClick = {}/>
+		onClick = {props.clickEvent}/>
 </Card>
 
 export default Card
