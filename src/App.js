@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import galaxies from './Collections/galaxies'
-import { Container, Card, CardImage, Row } from 'mdbreact';
+import { Container, Row } from 'mdbreact';
 import NewCard from './Components/NewCard/index'
 
 class App extends Component {
-
 	// add the state so we can track it across everything.
 	state = {
 		//tracks if the game is still going
@@ -32,17 +31,18 @@ class App extends Component {
 	};
 
 	//fn that will allow us to check if the id of the galaxy being clicked is is prsent in the state array for previously selected IDs.
-	clickCard = card => {
+	clickCard = (id) => {
+		console.log("The card was clicked", this.id);
 		//check if the playstate is still truthy
-		if (this.state.stillPlaying) {
-			//Make sure we are working with a number
-			const intVal = parseInt(card.target.id, 10);
-			//check if the file is in the ClickedArr and then route
-			return this.state.clickedArr.indexOf(intVal) ? this.keepGoing(intVal) : this.gameOver();
-		}
-		else {
-			return null;
-		}
+		// if (this.state.stillPlaying) {
+		// 	//Make sure we are working with a number
+		// 	const intVal = parseInt(event.id, 10);
+		// 	//check if the file is in the ClickedArr and then route
+		// 	return this.state.clickedArr.indexOf(intVal) ? this.keepGoing(intVal) : this.gameOver();
+		// }
+		// else {
+		// 	return null;
+		// }
 
 		//can we write as:
 		// this.state.stillPlaying ? checkPlace(cardVal) : null;
@@ -88,17 +88,13 @@ class App extends Component {
 						<li>You lose if you click a picture that you have previously clicked</li>
 					</ul>
 					<Container >
-					<Row>
+					<Row className = "mx-auto">
 						{this.state.galaxies.map(galaxy => (
-							<Card
-								key={galaxy.id}
-								className = "col-3"
-								>
-								<CardImage
-									src={galaxy.img}
-									onClick={this.clickCard}
-									id={galaxy.id} />
-							</Card>
+							<NewCard
+								key = {galaxy.id}
+								src = {galaxy.img}
+								clickCard = {this.clickCard(galaxy.id)}
+								id = {galaxy.id} />
 						)
 						)}
 						</Row>
