@@ -1,12 +1,17 @@
 import React from 'react';
+import Card from 'mdbreact';
 import "./NewCard.css"
 
-const NewCard = props => (
-	<div
-		onClick={() => { props.onClick() }}
-		className="card col-3 mx-auto"
-		>
-		<img src={props.img} />
-			</div >
-);
+const NewCard = props => {
+	return (
+		<React.Fragment>
+			<Card
+				onClick={() => { props.onClick() }}
+				className="col-3 mx-auto"
+			>
+				<img src={props.img} alt='' />
+			</Card>
+		</React.Fragment>
+	)
+};
 export default NewCard;

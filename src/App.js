@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import galaxies from './Collections/galaxies'
-import { Container, Row, Col, Mask, Fa, View, Button, Footer } from 'mdbreact';
+import { Container, Card, CardImage, Row } from 'mdbreact';
 import NewCard from './Components/NewCard/index'
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
 		clickedArr: [],
 		// how many clicks the user has made correctly on the images without repeating their choice
 		clicks: 0,
-		galaxies : galaxies
+		galaxies: galaxies
 	};
 	// place all the cards on the page
 	placeCards = inputArr => {
@@ -28,7 +28,7 @@ class App extends Component {
 				id={input.id}
 			/>
 		))
-		console.log ("It at least gets this far");
+		console.log("It at least gets this far");
 	};
 
 	//fn that will allow us to check if the id of the galaxy being clicked is is prsent in the state array for previously selected IDs.
@@ -88,15 +88,20 @@ class App extends Component {
 						<li>You lose if you click a picture that you have previously clicked</li>
 					</ul>
 					<Container >
-				{this.state.galaxies.map( galaxy =>(
-					<NewCard
-					key ={galaxy.id}
-				img= {galaxy.img}
-				onClick={this.clickCard}
-				id={galaxy.id}
-			/>
-				)
-				)}
+					<Row>
+						{this.state.galaxies.map(galaxy => (
+							<Card
+								key={galaxy.id}
+								className = "col-3"
+								>
+								<CardImage
+									src={galaxy.img}
+									onClick={this.clickCard}
+									id={galaxy.id} />
+							</Card>
+						)
+						)}
+						</Row>
 					</Container>
 				</div>
 
