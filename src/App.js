@@ -22,40 +22,51 @@ class App extends Component {
 		inputArr.map(input => (
 			// return a new Card and pass in the object properties
 			<NewCard
-				image={input.img}
-				clickEvent={this.clickCard}
-				id={input.id}
-			/>
+				key={input.id}
+				src={input.img}
+				setClicked={this.setClicked}
+				id={input.id} />
 		))
 		console.log("It at least gets this far");
 	};
 
 	//fn that will allow us to check if the id of the galaxy being clicked is is prsent in the state array for previously selected IDs.
-	clickCard = (id) => {
-		console.log("The card was clicked", this.id);
+	setClicked = e => {
+
+		console.log("The card was clicked", e);
 		//check if the playstate is still truthy
-		// if (this.state.stillPlaying) {
-		// 	//Make sure we are working with a number
-		// 	const intVal = parseInt(event.id, 10);
-		// 	//check if the file is in the ClickedArr and then route
-		// 	return this.state.clickedArr.indexOf(intVal) ? this.keepGoing(intVal) : this.gameOver();
-		// }
-		// else {
-		// 	return null;
-		// }
+		if (this.state.stillPlaying) {
+			//Make sure we are working with a number
+			const intVal = parseInt(e, 10);
+			console.log("intval", intVal);
+			//check if the file is in the ClickedArr and then route
+			const result = this.state.clickedArr.indexOf(intVal) ? this.keepGoing(intVal) : this.gameOver();
+			console.log('result', result);
+			return result;
+		}
+		else {
+			return null;
+		}
 
 		//can we write as:
 		// this.state.stillPlaying ? checkPlace(cardVal) : null;
 	};
 
-	//if the the value wasn't present then we will push the parseInt'd version of the card's value to the array and then keep going
+	//if the the value wasn't present then we will push the parseInt'd version of the card's value to the array, shuffle, and then keep going
 	keepGoing = (intVal) => {
-		const updatedArr = this.state.clickedArr.concat(intVal);
-		const newClicks = (this.state.clicks + 1)
+		const updatedArr = (this.state.clickedArr.concat(intVal));
+		const newClicks = (this.state.clicks + 1);
+		// this makes a new const that is a random sort of the old object
+		const newGalaxies = (this.state.galaxies.sort(
+			function () {
+				return 0.5 - Math.random()
+			}	));
+		console.log("this is the updated consts", updatedArr, newClicks);
 		this.setState(
 			{
 				clickedArr: updatedArr,
-				clicks: newClicks
+				clicks: newClicks,
+				galaxies: newGalaxies
 			});
 	};
 
@@ -88,15 +99,15 @@ class App extends Component {
 						<li>You lose if you click a picture that you have previously clicked</li>
 					</ul>
 					<Container >
-					<Row className = "mx-auto">
-						{this.state.galaxies.map(galaxy => (
-							<NewCard
-								key = {galaxy.id}
-								src = {galaxy.img}
-								clickCard = {this.clickCard(galaxy.id)}
-								id = {galaxy.id} />
-						)
-						)}
+						<Row className="mx-auto">
+							{this.state.galaxies.map(galaxy => (
+								<NewCard
+									key={galaxy.id}
+									src={galaxy.img}
+									setClicked={this.setClicked}
+									id={galaxy.id} />
+							)
+							)}
 						</Row>
 					</Container>
 				</div>
