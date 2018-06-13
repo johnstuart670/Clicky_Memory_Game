@@ -57,8 +57,8 @@ class App extends Component {
 		const updatedArr = (this.state.clickedArr.concat(intVal));
 		const newClicks = (this.state.clicks + 1);
 		// this makes a new const that is a random sort of the old object
-		const newGalaxies = (this.state.galaxies.sort(
-			function () {
+		const newGalaxies = (this.state.galaxies
+			.sort(function () {
 				return 0.5 - Math.random()
 			}	));
 		console.log("this is the updated consts", updatedArr, newClicks);
@@ -92,12 +92,9 @@ class App extends Component {
 					<p className="App-intro">
 						The game is simple:
 					</p>
-					<ul>
-						<li>Don't click the same picture twice.
-					</li>
-						<li>Points awarded for each picture you haven't previously clicked</li>
-						<li>You lose if you click a picture that you have previously clicked</li>
-					</ul>
+						<p>Don't click the same picture twice.</p>
+						<p>Points awarded for each picture you haven't previously clicked</p>
+						<p>You lose if you click a picture that you have previously clicked</p>
 					<Container >
 						<Row className="mx-auto">
 							{this.state.galaxies.map(galaxy => (

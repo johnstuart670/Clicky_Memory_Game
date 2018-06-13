@@ -10,8 +10,6 @@ const NewCard = props => {
 				<img 
 				src = {props.src} 
 				alt='' 
-				// onClick = { props.clickCard({props.id}) }
-				value = {props.id}
 				className = "cardImg"
 				/>
 			</div>
