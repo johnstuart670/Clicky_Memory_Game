@@ -1,0 +1,12 @@
+.NewCard {
+	max-height: 200px;
+	width: 20%;
+	margin: 15px 15px 15px 15px;
+}
+
+.cardImg {
+	height: 200px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}

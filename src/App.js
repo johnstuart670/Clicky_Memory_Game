@@ -2,32 +2,21 @@ import React, { Component } from 'react';
 import './App.css';
 import galaxies from './Collections/galaxies'
 import { Container, Row } from 'mdbreact';
-import NewCard from './Components/NewCard/index'
+import NewCard from './Components/NewCard/index';
+import NewCardNoClick from './Components/NewCardNoClick/index';
 
 class App extends Component {
 	// add the state so we can track it across everything.
 	state = {
 		//tracks if the game is still going
 		stillPlaying: true,
+
 		// tracks the values of the divs that have been clicked
 		clickedArr: [],
+		lastClicked: "",
 		// how many clicks the user has made correctly on the images without repeating their choice
 		clicks: 0,
 		galaxies: galaxies
-	};
-	// place all the cards on the page
-	placeCards = inputArr => {
-		console.log("inputtArr", inputArr);
-		// update map a new array with all of the inputs
-		inputArr.map(input => (
-			// return a new Card and pass in the object properties
-			<NewCard
-				key={input.id}
-				src={input.img}
-				setClicked={this.setClicked}
-				id={input.id} />
-		))
-		console.log("It at least gets this far");
 	};
 
 	//fn that will allow us to check if the id of the galaxy being clicked is is prsent in the state array for previously selected IDs.
@@ -49,7 +38,8 @@ class App extends Component {
 		}
 
 		//can we write as:
-		// this.state.stillPlaying ? checkPlace(cardVal) : null;
+		// this.state.stillPlaying ? keepGoing(cardVal) : null;
+		// 
 	};
 
 	//if the the value wasn't present then we will push the parseInt'd version of the card's value to the array, shuffle, and then keep going
@@ -60,7 +50,7 @@ class App extends Component {
 		const newGalaxies = (this.state.galaxies
 			.sort(function () {
 				return 0.5 - Math.random()
-			}	));
+			}));
 		console.log("this is the updated consts", updatedArr, newClicks);
 		this.setState(
 			{
@@ -76,10 +66,38 @@ class App extends Component {
 		this.setState(
 			{
 				clickedArr: [],
-				clicks: 0
+				clicks: 0,
+				stillPlaying: false
 			}
 		)
 	};
+
+	placeNewCards = (inputArr, stateEval) => {
+	 return	stateEval ? this.newCardClick(inputArr) : this.newCardNoClick(inputArr);
+	};
+
+	newCardClick = inputArr => {
+		return (
+			inputArr.map(input => {
+				return (<NewCard
+					key={input.key}
+					src={input.img}
+					setClicked={this.setClicked}
+					id={input.id} />
+				)
+			}))
+	};
+	newCardNoClick = inputArr => {
+		return (
+			inputArr.map(input => {
+				return (<NewCardNoClick
+					key={input.key}
+					src={input.img}
+					id={input.id} />
+				)
+			}))
+	};
+
 
 	render() {
 		return (
@@ -92,19 +110,12 @@ class App extends Component {
 					<p className="App-intro">
 						The game is simple:
 					</p>
-						<p>Don't click the same picture twice.</p>
-						<p>Points awarded for each picture you haven't previously clicked</p>
-						<p>You lose if you click a picture that you have previously clicked</p>
+					<p>Don't click the same picture twice.</p>
+					<p>Points awarded for each picture you haven't previously clicked</p>
+					<p>You lose if you click a picture that you have previously clicked</p>
 					<Container >
 						<Row className="mx-auto">
-							{this.state.galaxies.map(galaxy => (
-								<NewCard
-									key={galaxy.id}
-									src={galaxy.img}
-									setClicked={this.setClicked}
-									id={galaxy.id} />
-							)
-							)}
+							{this.placeNewCards(this.state.galaxies, this.state.stillPlaying)}
 						</Row>
 					</Container>
 				</div>
