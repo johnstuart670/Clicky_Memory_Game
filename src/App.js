@@ -1,57 +1,41 @@
 import React, { Component } from 'react';
 import './App.css';
 import galaxies from './Collections/galaxies'
-import { Container, Row } from 'mdbreact';
+import { Container, Row, Button } from 'mdbreact';
 import NewCard from './Components/NewCard/index';
-import NewCardNoClick from './Components/NewCardNoClick/index';
 
 class App extends Component {
 	// add the state so we can track it across everything.
 	state = {
 		//tracks if the game is still going
 		stillPlaying: true,
-
 		// tracks the values of the divs that have been clicked
 		clickedArr: [],
 		lastClicked: "",
 		// how many clicks the user has made correctly on the images without repeating their choice
 		clicks: 0,
+		//import the galaxies item
 		galaxies: galaxies
 	};
 
 	//fn that will allow us to check if the id of the galaxy being clicked is is prsent in the state array for previously selected IDs.
 	setClicked = e => {
-
-		console.log("The card was clicked", e);
-		//check if the playstate is still truthy
-		if (this.state.stillPlaying) {
-			//Make sure we are working with a number
-			const intVal = parseInt(e, 10);
-			console.log("intval", intVal);
-			//check if the file is in the ClickedArr and then route
-			const result = this.state.clickedArr.indexOf(intVal) ? this.keepGoing(intVal) : this.gameOver();
-			console.log('result', result);
-			return result;
-		}
-		else {
-			return null;
-		}
-
-		//can we write as:
-		// this.state.stillPlaying ? keepGoing(cardVal) : null;
-		// 
+		//Make sure we are working with a number
+		const intVal = parseInt(e, 10);
+		//check if the value is in the ClickedArr and then route
+		const intCheck = this.state.clickedArr.indexOf(intVal);
+		return (intCheck === -1) ? this.keepGoing(intVal) : this.gameOver();
 	};
 
 	//if the the value wasn't present then we will push the parseInt'd version of the card's value to the array, shuffle, and then keep going
 	keepGoing = (intVal) => {
 		const updatedArr = (this.state.clickedArr.concat(intVal));
-		const newClicks = (this.state.clicks + 1);
+		const newClicks = updatedArr.length;
 		// this makes a new const that is a random sort of the old object
 		const newGalaxies = (this.state.galaxies
 			.sort(function () {
 				return 0.5 - Math.random()
 			}));
-		console.log("this is the updated consts", updatedArr, newClicks);
 		this.setState(
 			{
 				clickedArr: updatedArr,
@@ -59,6 +43,20 @@ class App extends Component {
 				galaxies: newGalaxies
 			});
 	};
+	resetGame = () => {
+		const newGalaxies = (this.state.galaxies
+			.sort(function () {
+				return 0.5 - Math.random()
+			}));
+		this.setState(
+			{
+				clickedArr: [],
+				clicks: 0,
+				galaxies: newGalaxies,
+				stillPlaying: true
+			});
+	}
+	
 
 	//gameOver function that will reset all the values and highlight
 	gameOver = () => {
@@ -72,27 +70,15 @@ class App extends Component {
 		)
 	};
 
-	placeNewCards = (inputArr, stateEval) => {
-	 return	stateEval ? this.newCardClick(inputArr) : this.newCardNoClick(inputArr);
-	};
 
-	newCardClick = inputArr => {
+
+	placeNewCards = (inputArr, stateEval) => {
 		return (
 			inputArr.map(input => {
 				return (<NewCard
 					key={input.key}
 					src={input.img}
-					setClicked={this.setClicked}
-					id={input.id} />
-				)
-			}))
-	};
-	newCardNoClick = inputArr => {
-		return (
-			inputArr.map(input => {
-				return (<NewCardNoClick
-					key={input.key}
-					src={input.img}
+					setClicked= {stateEval ? this.setClicked : () => {return}}
 					id={input.id} />
 				)
 			}))
@@ -116,6 +102,12 @@ class App extends Component {
 					<Container >
 						<Row className="mx-auto">
 							{this.placeNewCards(this.state.galaxies, this.state.stillPlaying)}
+						</Row>
+						<Row>
+						<Button block
+						onClick = {this.resetGame}>
+						Click Here to reset the game
+						</Button>
 						</Row>
 					</Container>
 				</div>
