@@ -56,7 +56,7 @@ class App extends Component {
 				stillPlaying: true
 			});
 	}
-	
+
 
 	//gameOver function that will reset all the values and highlight
 	gameOver = () => {
@@ -78,8 +78,7 @@ class App extends Component {
 				return (<NewCard
 					key={input.key}
 					src={input.img}
-					setClicked= {stateEval ? this.setClicked : () => {return}}
-					addlClass = {stateEval ? null : input.frameColor}
+					setClicked={stateEval ? this.setClicked : () => { return }}
 					id={input.id} />
 				)
 			}))
@@ -105,9 +104,9 @@ class App extends Component {
 							{this.placeNewCards(this.state.galaxies, this.state.stillPlaying)}
 						</Row>
 						<Row>
-						<Button block
-						onClick = {this.resetGame}>
-						Click Here to reset the game
+							<Button block
+								onClick={this.resetGame}>
+								Click Here to reset the game
 						</Button>
 						</Row>
 					</Container>
