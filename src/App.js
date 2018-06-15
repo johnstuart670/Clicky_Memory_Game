@@ -79,6 +79,7 @@ class App extends Component {
 					key={input.key}
 					src={input.img}
 					setClicked= {stateEval ? this.setClicked : () => {return}}
+					addlClass = {stateEval ? null : input.frameColor}
 					id={input.id} />
 				)
 			}))
